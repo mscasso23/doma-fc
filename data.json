@@ -5,6 +5,7 @@
    "id": "s_ape2026",
    "nombre": "Apertura 2026",
    "orden": 1,
+   "posicion": 2,
    "pjManual": {
     "pl_francisco_palermo": 13,
     "pl_mauro_scasso": 12,
