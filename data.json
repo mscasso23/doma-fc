@@ -791,6 +791,81 @@
    "mvp": null,
    "video": "https://youtu.be/2hOPuWHPIJA",
    "notas": "Todo cogido el gordo puto"
+  },
+  {
+   "id": "m_mtdcv6terel",
+   "seasonId": "s_mtdbtwzfq7h",
+   "fecha": "2026-08-27",
+   "jornada": "Fecha 2",
+   "rival": "Los Primos",
+   "sede": "",
+   "gf": 5,
+   "gc": 2,
+   "goles": [
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": "pl_francisco_palermo"
+    },
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": null
+    },
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": "pl_franco_ibarra"
+    },
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": "pl_rodrigo_diaz"
+    }
+   ],
+   "walkover": false,
+   "formacion": "2-4-1",
+   "alineacion": {
+    "arq": "pl_mtdcpdqm541",
+    "def": [
+     "pl_federico_giuffrida",
+     "pl_giuliano_vitalone"
+    ],
+    "vol": [
+     "pl_tomas_lamas",
+     "pl_mauro_scasso",
+     "pl_lucas_petrone",
+     "pl_francisco_palermo"
+    ],
+    "del": [
+     "pl_franco_ibarra"
+    ]
+   },
+   "titulares": [
+    "pl_mtdcpdqm541",
+    "pl_federico_giuffrida",
+    "pl_giuliano_vitalone",
+    "pl_tomas_lamas",
+    "pl_mauro_scasso",
+    "pl_lucas_petrone",
+    "pl_francisco_palermo",
+    "pl_franco_ibarra"
+   ],
+   "suplentes": [
+    "pl_rodrigo_diaz",
+    "pl_matias_espejo",
+    "pl_ramiro_almada"
+   ],
+   "arquero": "pl_mtdcpdqm541",
+   "tarjetas": {},
+   "mvp": null,
+   "video": "",
+   "notas": ""
   }
  ]
 }
