@@ -1,0 +1,714 @@
+{
+ "version": 2,
+ "seasons": [
+  {
+   "id": "s_ape2026",
+   "nombre": "Apertura 2026",
+   "orden": 1,
+   "pjManual": {
+    "pl_francisco_palermo": 13,
+    "pl_mauro_scasso": 12,
+    "pl_ramiro_almada": 9,
+    "pl_rodrigo_diaz": 0,
+    "pl_emanuel_cattolico": 12,
+    "pl_gonzalo_roman": 12,
+    "pl_joaco_paz": 5,
+    "pl_tomas_lamas": 8,
+    "pl_matias_espejo": 7,
+    "pl_lucas_petrone": 5,
+    "pl_agustin_suarez": 13,
+    "pl_franco_ibarra": 12,
+    "pl_giuliano_vitalone": 8,
+    "pl_gasti_cavs": 8,
+    "pl_federico_giuffrida": 12
+   },
+   "arqueros": {
+    "pl_joaco_paz": {
+     "pj": 5,
+     "gc": 12
+    },
+    "pl_gasti_cavs": {
+     "pj": 8,
+     "gc": 14
+    }
+   }
+  }
+ ],
+ "players": [
+  {
+   "id": "pl_francisco_palermo",
+   "nombre": "Francisco Palermo",
+   "apodo": "",
+   "dorsal": "10",
+   "pos": "",
+   "activo": true
+  },
+  {
+   "id": "pl_mauro_scasso",
+   "nombre": "Mauro Scasso",
+   "apodo": "",
+   "dorsal": "5",
+   "pos": "",
+   "activo": true
+  },
+  {
+   "id": "pl_ramiro_almada",
+   "nombre": "Ramiro Almada",
+   "apodo": "",
+   "dorsal": "17",
+   "pos": "",
+   "activo": true
+  },
+  {
+   "id": "pl_rodrigo_diaz",
+   "nombre": "Rodrigo Diaz",
+   "apodo": "",
+   "dorsal": "12",
+   "pos": "",
+   "activo": true
+  },
+  {
+   "id": "pl_emanuel_cattolico",
+   "nombre": "Emanuel Cattolico",
+   "apodo": "",
+   "dorsal": "14",
+   "pos": "",
+   "activo": true
+  },
+  {
+   "id": "pl_gonzalo_roman",
+   "nombre": "Gonzalo Roman",
+   "apodo": "",
+   "dorsal": "26",
+   "pos": "",
+   "activo": true
+  },
+  {
+   "id": "pl_joaco_paz",
+   "nombre": "Joaco Paz",
+   "apodo": "",
+   "dorsal": "1",
+   "pos": "ARQ",
+   "activo": true
+  },
+  {
+   "id": "pl_tomas_lamas",
+   "nombre": "Tomas Lamas",
+   "apodo": "",
+   "dorsal": "29",
+   "pos": "",
+   "activo": true
+  },
+  {
+   "id": "pl_matias_espejo",
+   "nombre": "Matias Espejo",
+   "apodo": "",
+   "dorsal": "2",
+   "pos": "",
+   "activo": true
+  },
+  {
+   "id": "pl_lucas_petrone",
+   "nombre": "Lucas Petrone",
+   "apodo": "",
+   "dorsal": "8",
+   "pos": "",
+   "activo": true
+  },
+  {
+   "id": "pl_agustin_suarez",
+   "nombre": "Agustin Suarez",
+   "apodo": "",
+   "dorsal": "23",
+   "pos": "",
+   "activo": true
+  },
+  {
+   "id": "pl_franco_ibarra",
+   "nombre": "Franco Ibarra",
+   "apodo": "",
+   "dorsal": "9",
+   "pos": "",
+   "activo": true
+  },
+  {
+   "id": "pl_giuliano_vitalone",
+   "nombre": "Giuliano Vitalone",
+   "apodo": "",
+   "dorsal": "4",
+   "pos": "",
+   "activo": true
+  },
+  {
+   "id": "pl_gasti_cavs",
+   "nombre": "Gasti Cavs",
+   "apodo": "",
+   "dorsal": "",
+   "pos": "ARQ",
+   "activo": true
+  },
+  {
+   "id": "pl_federico_giuffrida",
+   "nombre": "Federico Giuffrida",
+   "apodo": "",
+   "dorsal": "",
+   "pos": "",
+   "activo": true
+  }
+ ],
+ "matches": [
+  {
+   "id": "m_ape01",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-03-12",
+   "jornada": "Fecha 1",
+   "rival": "Lugano Tennis Club",
+   "sede": "",
+   "gf": 6,
+   "gc": 2,
+   "goles": [
+    {
+     "autor": "pl_gonzalo_roman",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_gonzalo_roman",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_gonzalo_roman",
+     "ec": false,
+     "asist": null
+    },
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": "pl_tomas_lamas"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_franco_ibarra"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    }
+   ],
+   "video": "https://www.youtube.com/watch?v=CNbF3SzU3yY",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_ape02",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-03-19",
+   "jornada": "Fecha 2",
+   "rival": "Lugano City",
+   "sede": "",
+   "gf": 3,
+   "gc": 3,
+   "goles": [
+    {
+     "autor": "pl_francisco_palermo",
+     "ec": false,
+     "asist": "pl_agustin_suarez"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_tomas_lamas"
+    },
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": "pl_emanuel_cattolico"
+    }
+   ],
+   "video": "https://youtu.be/lOuVZarG7sQ?si=WhMlewWrGx6YZZw4",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_ape03",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-03-26",
+   "jornada": "Fecha 3",
+   "rival": "Barsito FC",
+   "sede": "",
+   "gf": 4,
+   "gc": 4,
+   "goles": [
+    {
+     "autor": "pl_francisco_palermo",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": "pl_franco_ibarra"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_franco_ibarra"
+    },
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": null
+    }
+   ],
+   "video": "https://youtu.be/r5FZtbQ7T3Q?si=RyGWto8qez7obDmA",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_ape04",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-04-02",
+   "jornada": "Fecha 4",
+   "rival": "Bigotes FC",
+   "sede": "",
+   "gf": 3,
+   "gc": 1,
+   "goles": [
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_matias_espejo"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": null
+    }
+   ],
+   "video": "https://youtu.be/thBQge6VGHw?si=ZsJOsmeUxxlmCmKc",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_ape05",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-04-09",
+   "jornada": "Fecha 5",
+   "rival": "El Nudo FC",
+   "sede": "",
+   "gf": 1,
+   "gc": 2,
+   "goles": [
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_ramiro_almada"
+    }
+   ],
+   "video": "https://youtu.be/-Ssi1L0aWH4?si=dxs2Dlp4PId1djAT",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_ape06",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-04-16",
+   "jornada": "Fecha 6",
+   "rival": "Los pibes de Santander",
+   "sede": "",
+   "gf": 3,
+   "gc": 2,
+   "goles": [
+    {
+     "autor": "pl_gonzalo_roman",
+     "ec": false,
+     "asist": "pl_agustin_suarez"
+    },
+    {
+     "autor": "pl_francisco_palermo",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    }
+   ],
+   "video": "https://youtu.be/cdwPbduld9M?si=8oAN_oGWYcP4k2_b",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_ape07",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-04-23",
+   "jornada": "Fecha 7",
+   "rival": "Vive Fit",
+   "sede": "",
+   "gf": 3,
+   "gc": 0,
+   "goles": [
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": null
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": null,
+     "ec": true,
+     "asist": null
+    }
+   ],
+   "video": "https://youtu.be/e48dRkd77u8?si=9tjhRr69rjwlBCZ3",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_ape08",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-04-30",
+   "jornada": "Fecha 8",
+   "rival": "Lugano Tennis Club",
+   "sede": "",
+   "gf": 8,
+   "gc": 2,
+   "goles": [
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_emanuel_cattolico"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_franco_ibarra"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_gonzalo_roman"
+    },
+    {
+     "autor": "pl_gonzalo_roman",
+     "ec": false,
+     "asist": "pl_agustin_suarez"
+    },
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": null
+    },
+    {
+     "autor": "pl_francisco_palermo",
+     "ec": false,
+     "asist": "pl_agustin_suarez"
+    },
+    {
+     "autor": "pl_gonzalo_roman",
+     "ec": false,
+     "asist": "pl_franco_ibarra"
+    },
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": "pl_emanuel_cattolico"
+    }
+   ],
+   "video": "https://www.youtube.com/watch?v=YtdG3f4R8uk",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_ape09",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-05-07",
+   "jornada": "Fecha 9",
+   "rival": "Lugano City",
+   "sede": "",
+   "gf": 7,
+   "gc": 2,
+   "goles": [
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": null
+    },
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_franco_ibarra"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": "pl_emanuel_cattolico"
+    },
+    {
+     "autor": "pl_gonzalo_roman",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": null
+    }
+   ],
+   "video": "https://youtu.be/uQCsQAsXMtg?si=OYHmox7o0DhSZA5j",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_ape10",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-05-14",
+   "jornada": "Fecha 10",
+   "rival": "Barsito FC",
+   "sede": "",
+   "gf": 3,
+   "gc": 2,
+   "goles": [
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": "pl_agustin_suarez"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": null
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_gonzalo_roman"
+    }
+   ],
+   "video": "https://youtu.be/jHwF8LYTC8I?si=P9__dQ7i59ewrd8z",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_ape11",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-05-21",
+   "jornada": "Fecha 11",
+   "rival": "Bigotes FC",
+   "sede": "",
+   "gf": 2,
+   "gc": 1,
+   "goles": [
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_gonzalo_roman"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": null
+    }
+   ],
+   "video": "",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_ape12",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-05-28",
+   "jornada": "Fecha 12",
+   "rival": "El Nudo FC",
+   "sede": "",
+   "gf": 2,
+   "gc": 3,
+   "goles": [
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_francisco_palermo"
+    }
+   ],
+   "video": "https://youtu.be/0XrnaHQeXpQ?si=UnpJe63OwD0p4Wdx",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_ape13",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-06-04",
+   "jornada": "Fecha 13",
+   "rival": "Branca United",
+   "sede": "",
+   "gf": 7,
+   "gc": 2,
+   "goles": [
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_gonzalo_roman",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_gonzalo_roman",
+     "ec": false,
+     "asist": null
+    },
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": "pl_franco_ibarra"
+    },
+    {
+     "autor": "pl_federico_giuffrida",
+     "ec": false,
+     "asist": "pl_franco_ibarra"
+    }
+   ],
+   "video": "https://youtu.be/kMndk_y_nSc?si=Nr_3kFrlRKRgBIiv",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_ape14",
+   "seasonId": "s_ape2026",
+   "fecha": "2026-06-11",
+   "jornada": "Fecha 14",
+   "rival": "Vive Fit",
+   "sede": "",
+   "gf": 3,
+   "gc": 0,
+   "goles": [],
+   "video": "",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": true,
+   "notas": "El rival no se presento"
+  }
+ ]
+}
