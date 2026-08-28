@@ -718,6 +718,42 @@
    "mvp": null,
    "walkover": true,
    "notas": "El rival no se presento"
+  },
+  {
+   "id": "m_mtdbwcao12c",
+   "seasonId": "s_mtdbtwzfq7h",
+   "fecha": "2026-08-20",
+   "jornada": "Fecha 1",
+   "rival": "Lugano Tennis Club",
+   "sede": "",
+   "gf": 3,
+   "gc": 2,
+   "goles": [
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    },
+    {
+     "autor": "pl_francisco_palermo",
+     "ec": false,
+     "asist": "pl_mauro_scasso"
+    }
+   ],
+   "walkover": false,
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "video": "https://youtu.be/2hOPuWHPIJA",
+   "notas": "Todo cogido el gordo puto"
   }
  ]
 }
