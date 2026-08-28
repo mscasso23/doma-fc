@@ -114,11 +114,9 @@ a{color:var(--vino)}
 .band{background:var(--band);color:var(--band-text);border-bottom:4px solid var(--band-rule)}
 .band-in{max-width:1040px;margin:0 auto;padding:14px 18px 12px;display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
 .crest{display:flex;align-items:center;gap:11px;margin-right:auto}
-.crest-img{
-  height:52px;width:auto;flex:none;display:block;
-  background:#fff;border-radius:7px;padding:3px 5px;
-  box-shadow:0 1px 6px rgba(0,0,0,.25);
-}
+/* el PNG viene con fondo recortado: va directo sobre la banda, sin caja blanca */
+.crest-img{height:60px;width:auto;flex:none;display:block}
+@media (max-width:420px){ .crest-img{height:48px} }
 .crest-mark{
   width:40px;height:44px;flex:none;border-radius:5px;
   background:var(--band-text);color:var(--band);
