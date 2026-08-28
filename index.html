@@ -255,7 +255,28 @@ table.plain{min-width:0}
 
 /* ---------- pitch ---------- */
 .pitch{width:100%;max-width:340px;margin:0 auto;display:block;border-radius:8px;overflow:hidden}
-.pitch-name{font-family:var(--f-body);font-size:4.1px;font-weight:600;fill:#fff}
+.pitch-name{font-family:var(--f-body);font-size:4.3px;font-weight:600;fill:#fff}
+/* banco de suplentes, debajo de la cancha */
+.bench{display:flex;flex-wrap:wrap;gap:7px}
+.bench-i{
+  display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+  background:var(--surface-2);border:1px solid var(--line);border-radius:99px;
+  padding:4px 11px 4px 5px;font-size:13px;font-weight:500;
+}
+.bench-i:hover{border-color:var(--text-3)}
+.bench-n{
+  display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:99px;
+  background:var(--vino);color:var(--on-vino);
+  font-family:var(--f-mono);font-size:10.5px;font-weight:600;padding:0 4px;
+}
+/* editor de alineacion por linea */
+.linea{display:grid;gap:8px;grid-template-columns:44px 1fr;align-items:start}
+.linea-t{
+  font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--text-3);
+  padding-top:11px;text-transform:uppercase;
+}
+.linea-s{display:grid;gap:7px;grid-template-columns:repeat(auto-fit,minmax(132px,1fr))}
+.supl-row{display:grid;grid-template-columns:1fr 30px;gap:7px;align-items:center}
 .pitch-dor{font-family:var(--f-mono);font-size:5px;font-weight:600;fill:#fff}
 .pitch-g{font-family:var(--f-body);font-size:4px;font-weight:700;fill:#FFAE5C}
 
@@ -504,8 +525,11 @@ function migrate(){
   });
 }
 
-var FORMS={"3-3-1":[3,3,1],"2-3-2":[2,3,2],"3-2-2":[3,2,2],"2-4-1":[2,4,1],"1-3-3":[1,3,3],"3-1-3":[3,1,3],"2-2-3":[2,2,3],"4-2-1":[4,2,1]};
-var POS=["ARQ","DEF","MED","DEL"];
+// Futbol 8: arquero + 7. Solo las dos formaciones que usa el equipo.
+var FORMS={"3-3-1":{def:3,vol:3,del:1},"2-4-1":{def:2,vol:4,del:1}};
+var FORM_DEF="3-3-1";
+var POS=["ARQ","DEF","VOL","DEL"];
+var LINEAS=[["def","DEF"],["vol","VOL"],["del","DEL"]];
 var MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
 var MESL=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 var ALL="__all__";
@@ -767,49 +791,115 @@ function playerOpts(selected,vacio,extra){
 }
 
 /* ===================== cancha ===================== */
+// En la camiseta va el apodo, o el apellido solo. Si dos comparten apellido,
+// se desambigua con la inicial del nombre.
 function shortName(pid){
   var p=player(pid); if(!p) return "—";
   if(p.apodo) return p.apodo;
   var parts=String(p.nombre||"").trim().split(/\s+/);
-  return parts.length===1?parts[0]:(parts[0].charAt(0)+". "+parts[parts.length-1]);
+  if(parts.length===1) return parts[0];
+  var ape=parts[parts.length-1];
+  var choque=S.players.some(function(o){
+    if(o.id===p.id||o.apodo) return false;
+    var q=String(o.nombre||"").trim().split(/\s+/);
+    return q.length>1&&q[q.length-1].toLowerCase()===ape.toLowerCase();
+  });
+  return choque?(parts[0].charAt(0)+". "+ape):ape;
 }
-function pitchSVG(m){
-  var rows=FORMS[m.formacion]||FORMS["3-3-1"];
+// La alineacion vive en m.alineacion {arq, def[], vol[], del[]}. Los partidos
+// viejos solo tienen titulares[] + formacion: los interpretamos por orden.
+function alineacionDe(m){
+  var f=FORMS[m.formacion]||FORMS[FORM_DEF];
+  if(m.alineacion&&typeof m.alineacion==="object"){
+    var a=m.alineacion;
+    return {
+      arq:a.arq||null,
+      def:(a.def||[]).slice(0,f.def),
+      vol:(a.vol||[]).slice(0,f.vol),
+      del:(a.del||[]).slice(0,f.del)
+    };
+  }
   var tit=(m.titulares||[]).slice();
   var gk=m.arquero&&tit.indexOf(m.arquero)>=0?m.arquero:null;
-  var field=tit.filter(function(p){return p!==gk;});
-  var chalk="rgba(255,255,255,.42)";
+  var campo=tit.filter(function(p){return p!==gk;});
+  return {arq:gk, def:campo.splice(0,f.def), vol:campo.splice(0,f.vol), del:campo.splice(0,f.del)};
+}
+function normalizarLinea(arr,n){
+  var out=(arr||[]).slice(0,n);
+  while(out.length<n) out.push("");
+  return out;
+}
+function planos(a){
+  return [a.arq].concat(a.def||[],a.vol||[],a.del||[]).filter(Boolean);
+}
+
+// Camiseta: se dibuja en una caja de 20x20 y se escala al lugar.
+var JERSEY="M3.2 2.6L7 1.2C8.4 3.2 11.6 3.2 13 1.2L16.8 2.6L19.4 7.4L15.8 8.8"+
+           "L15.8 18.6C12 19.6 8 19.6 4.2 18.6L4.2 8.8L0.6 7.4Z";
+function pitchSVG(m){
+  var a=alineacionDe(m), f=FORMS[m.formacion]||FORMS[FORM_DEF];
+  var chalk="rgba(255,255,255,.45)";
   var golesPor={};
   (m.goles||[]).forEach(function(g){ if(g.autor) golesPor[g.autor]=(golesPor[g.autor]||0)+1; });
-  var s='<svg class="pitch" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Formación">';
-  s+='<rect x="0" y="0" width="100" height="150" fill="var(--cancha)"/>';
-  for(var b=0;b<6;b+=2) s+='<rect x="0" y="'+(b*25)+'" width="100" height="25" fill="var(--cancha-2)" opacity=".55"/>';
+
+  var s='<svg class="pitch" viewBox="0 0 100 152" xmlns="http://www.w3.org/2000/svg" '+
+        'role="img" aria-label="Formación '+esc(m.formacion||FORM_DEF)+'">';
+  s+='<rect x="0" y="0" width="100" height="152" fill="var(--cancha)"/>';
+  for(var b=0;b<8;b+=2) s+='<rect x="0" y="'+(b*19)+'" width="100" height="19" fill="var(--cancha-2)" opacity=".6"/>';
   s+='<g fill="none" stroke="'+chalk+'" stroke-width=".7">';
-  s+='<rect x="4" y="4" width="92" height="142"/><line x1="4" y1="75" x2="96" y2="75"/><circle cx="50" cy="75" r="12"/>';
-  s+='<rect x="24" y="4" width="52" height="18"/><rect x="38" y="4" width="24" height="7"/>';
-  s+='<rect x="24" y="128" width="52" height="18"/><rect x="38" y="139" width="24" height="7"/>';
-  s+='</g><circle cx="50" cy="75" r="1.4" fill="'+chalk+'"/>';
-  function node(pid,x,y){
-    var p=player(pid), d=p&&p.dorsal?String(p.dorsal):"", n=golesPor[pid]||0;
-    var o='<g><circle cx="'+x+'" cy="'+y+'" r="6.4" fill="rgba(10,20,15,.55)" stroke="rgba(255,255,255,.75)" stroke-width=".8"/>';
-    o+='<text class="pitch-dor" x="'+x+'" y="'+(y+1.9)+'" text-anchor="middle">'+esc(d||"·")+'</text>';
-    o+='<text class="pitch-name" x="'+x+'" y="'+(y+11.4)+'" text-anchor="middle">'+esc(shortName(pid))+'</text>';
-    if(n>0) o+='<text class="pitch-g" x="'+x+'" y="'+(y+16)+'" text-anchor="middle">'+(n>1?n+" goles":"1 gol")+'</text>';
+  s+='<rect x="4" y="4" width="92" height="144"/><line x1="4" y1="76" x2="96" y2="76"/><circle cx="50" cy="76" r="12"/>';
+  s+='<rect x="26" y="4" width="48" height="17"/><rect x="39" y="4" width="22" height="7"/>';
+  s+='<rect x="26" y="131" width="48" height="17"/><rect x="39" y="141" width="22" height="7"/>';
+  s+='</g><circle cx="50" cy="76" r="1.3" fill="'+chalk+'"/>';
+
+  // Camiseta + dorsal + nombre. El arquero va en el naranja del club.
+  function camiseta(pid,x,y,esArq){
+    var p=player(pid);
+    var dor=p&&p.dorsal?String(p.dorsal):"";
+    var n=golesPor[pid]||0;
+    var W=14, k=W/20, ox=x-W/2, oy=y-(20*k)/2;
+    var relleno=esArq?"var(--cta)":"#FFFFFF";
+    var tinta=esArq?"var(--on-cta)":"#0E2A63";
+    var o='<g>';
+    o+='<g transform="translate('+ox.toFixed(2)+','+oy.toFixed(2)+') scale('+k.toFixed(3)+')">'+
+       '<path d="'+JERSEY+'" fill="'+relleno+'" stroke="rgba(14,42,99,.55)" stroke-width="1.1"/></g>';
+    if(dor) o+='<text x="'+x+'" y="'+(y+2.4)+'" text-anchor="middle" '+
+       'style="font-family:var(--f-mono);font-size:5.4px;font-weight:600;fill:'+tinta+'">'+esc(dor)+'</text>';
+    o+='<text class="pitch-name" x="'+x+'" y="'+(y+13.4)+'" text-anchor="middle">'+esc(shortName(pid))+'</text>';
+    if(n>0) o+='<text class="pitch-g" x="'+x+'" y="'+(y+18)+'" text-anchor="middle">'+
+       (n>1?n+" goles":"1 gol")+'</text>';
     return o+'</g>';
   }
-  if(gk) s+=node(gk,50,138);
-  var idx=0,nR=rows.length;
-  for(var r=0;r<nR;r++){
-    var y=nR>1?(120-r*(88/(nR-1))):75;
-    for(var c=0;c<rows[r];c++){
-      if(idx>=field.length) break;
-      var x=(c+1)*(100/(rows[r]+1));
-      s+=node(field[idx],50+(x-50)*.86,y);
-      idx++;
-    }
+  function vacia(x,y){
+    var W=14, k=W/20, ox=x-W/2, oy=y-(20*k)/2;
+    return '<g transform="translate('+ox.toFixed(2)+','+oy.toFixed(2)+') scale('+k.toFixed(3)+')">'+
+      '<path d="'+JERSEY+'" fill="rgba(255,255,255,.14)" stroke="rgba(255,255,255,.38)" '+
+      'stroke-width="1.1" stroke-dasharray="3 2.5"/></g>';
   }
-  for(;idx<field.length;idx++) s+=node(field[idx],12+(idx%2)*76,30);
+  function fila(ids,cant,y){
+    var out="";
+    for(var i=0;i<cant;i++){
+      var x=50+((i+1)*(100/(cant+1))-50)*0.88;
+      var pid=ids[i];
+      out+=pid?camiseta(pid,x,y,false):vacia(x,y);
+    }
+    return out;
+  }
+  s+=a.arq?camiseta(a.arq,50,133,true):vacia(50,133);
+  s+=fila(a.def||[],f.def,108);
+  s+=fila(a.vol||[],f.vol,73);
+  s+=fila(a.del||[],f.del,34);
   return s+'</svg>';
+}
+// Banco: chips con dorsal y nombre, debajo de la cancha.
+function bancoHTML(ids){
+  if(!ids||!ids.length) return '<p class="tiny muted" style="margin:0">Sin suplentes cargados.</p>';
+  return '<div class="bench">'+ids.map(function(pid){
+    var p=player(pid);
+    return '<span class="bench-i" data-player="'+esc(pid)+'">'+
+      '<span class="bench-n">'+esc(p&&p.dorsal?p.dorsal:"–")+'</span>'+
+      esc(pname(pid))+'</span>';
+  }).join("")+'</div>';
 }
 
 /* ===================== render: chrome ===================== */
@@ -1239,7 +1329,10 @@ function sheetMatch(mid){
   if(m.walkover) h+='<div class="note">El rival no se presentó: los '+num(m.gf)+' goles se dan por reglamento y el partido no cuenta para el presentismo.</div>';
 
   if(conv(m).length){
-    h+='<div><div class="eyebrow" style="margin-bottom:8px">Formación '+esc(m.formacion||"")+'</div>'+pitchSVG(m)+'</div>';
+    h+='<div><div class="eyebrow" style="margin-bottom:8px">Formación '+esc(m.formacion||FORM_DEF)+'</div>'+
+       pitchSVG(m)+
+       '<div class="eyebrow" style="margin:14px 0 8px">Suplentes</div>'+
+       bancoHTML(m.suplentes||[])+'</div>';
   }
 
   if(gl.length){
@@ -1261,12 +1354,7 @@ function sheetMatch(mid){
   }
 
   h+='<div class="kv">';
-  if(conv(m).length){
-    var titTxt=(m.titulares||[]).map(function(p){return esc(pname(p))+(p===m.arquero?" (ARQ)":"");}).join(", ");
-    h+='<div class="kvr"><span class="k">Titulares</span><span class="v">'+(titTxt||"—")+'</span></div>';
-    var sup=(m.suplentes||[]);
-    h+='<div class="kvr"><span class="k">Suplentes</span><span class="v">'+(sup.length?sup.map(function(p){return esc(pname(p));}).join(", "):"—")+'</span></div>';
-  }else{
+  if(!conv(m).length){
     h+='<div class="kvr"><span class="k">Alineación</span><span class="v muted">no cargada</span></div>';
   }
   if(m.mvp) h+='<div class="kvr"><span class="k">MVP</span><span class="v">'+esc(pname(m.mvp))+'</span></div>';
@@ -1324,18 +1412,30 @@ function sheetMatchForm(mid){
     walkover:m?!!m.walkover:false,
     video:m?(m.video||""):"",
     notas:m?(m.notas||""):"",
-    formacion:m?(m.formacion||""):"",
-    arquero:m?(m.arquero||""):"",
+    formacion:(m&&FORMS[m.formacion])?m.formacion:FORM_DEF,
     mvp:m?(m.mvp||""):"",
     goles:m?(m.goles||[]).map(function(g){return {autor:g.autor||"",ec:!!g.ec,asist:g.asist||""};}):[],
-    rol:{}, tj:{}
+    lin:{arq:"",def:[],vol:[],del:[]},
+    supl:[], tj:{}
   };
   if(m){
-    (m.titulares||[]).forEach(function(p){d.rol[p]="T";});
-    (m.suplentes||[]).forEach(function(p){d.rol[p]="S";});
+    var a0=alineacionDe(m);
+    d.lin.arq=a0.arq||"";
+    d.lin.def=a0.def||[]; d.lin.vol=a0.vol||[]; d.lin.del=a0.del||[];
+    d.supl=(m.suplentes||[]).slice();
     Object.keys(m.tarjetas||{}).forEach(function(p){d.tj[p]={am:m.tarjetas[p].am||0,ro:m.tarjetas[p].ro||0};});
   }
-  var pool=S.players.filter(function(p){return p.activo!==false||d.rol[p.id]||d.tj[p.id];});
+  // ajusta las lineas al tamaño de la formación elegida
+  function ajustarLineas(){
+    var f=FORMS[d.formacion]||FORMS[FORM_DEF];
+    d.lin.def=normalizarLinea(d.lin.def,f.def);
+    d.lin.vol=normalizarLinea(d.lin.vol,f.vol);
+    d.lin.del=normalizarLinea(d.lin.del,f.del);
+  }
+  ajustarLineas();
+  var pool=S.players.filter(function(p){
+    return p.activo!==false||planos(d.lin).indexOf(p.id)>=0||d.supl.indexOf(p.id)>=0||d.tj[p.id];
+  });
   if(!S.players.length){
     openSheet('<div class="sheet-h"><h2>Falta el plantel</h2><button class="x" data-close aria-label="Cerrar">×</button></div>'+
       '<div class="sheet-b"><div class="empty"><h3>Primero el plantel</h3>'+
@@ -1374,13 +1474,22 @@ function sheetMatchForm(mid){
     '<div class="toolbar" style="margin-top:10px"><button class="btn btn-sm" data-act="add-gol">+ Agregar gol</button>'+
     '<span class="tiny muted" id="gol-msg"></span></div></div>';
 
-  h+='<details class="fold"'+(conv(m||{}).length?" open":"")+'><summary>Alineación, tarjetas y MVP (opcional)</summary><div class="fold-b">'+
+  h+='<details class="fold"'+(conv(m||{}).length?" open":"")+'><summary>Alineación, suplentes, tarjetas y MVP (opcional)</summary><div class="fold-b">'+
+    '<div><div class="eyebrow" style="margin-bottom:8px">Formación</div>'+
+    '<div class="seg" id="m-form">'+
+      Object.keys(FORMS).map(function(f){
+        return '<button type="button" data-form="'+esc(f)+'" aria-pressed="'+(d.formacion===f?"true":"false")+'">'+esc(f)+'</button>';
+      }).join("")+
+    '</div></div>'+
+    '<div id="lineas"></div>'+
+    '<div><div class="eyebrow" style="margin-bottom:8px">Suplentes</div>'+
+    '<div id="supl"></div>'+
+    '<button class="btn btn-sm" data-act="add-supl" style="margin-top:9px">+ Agregar suplente</button></div>'+
     '<div class="fgrid">'+
-    '<label class="f"><span>Formación</span><select id="m-form">'+
-      opts(Object.keys(FORMS).map(function(f){return {v:f,t:f};}),d.formacion,"—")+'</select></label>'+
     '<label class="f"><span>MVP</span><select id="m-mvp">'+playerOpts(d.mvp,"—")+'</select></label>'+
     '</div>'+
-    '<div class="roster" id="roster"></div>'+
+    '<div><div class="eyebrow" style="margin-bottom:8px">Tarjetas</div>'+
+    '<div class="roster" id="roster"></div></div>'+
     '<p class="tiny muted" style="margin:0">Si cargás la alineación, los partidos jugados y el presentismo se calculan solos. Si no, quedan los que estén cargados a mano en la temporada.</p>'+
     '</div></details>';
 
@@ -1411,37 +1520,71 @@ function sheetMatchForm(mid){
       byId("golist").innerHTML=out;
       updateHint();
     }
+    // Un jugador no puede estar dos veces: al elegirlo se libera de donde estaba.
+    function liberar(pid,exceptoLinea,exceptoIdx){
+      if(!pid) return;
+      if(d.lin.arq===pid&&!(exceptoLinea==="arq")) d.lin.arq="";
+      ["def","vol","del"].forEach(function(k){
+        d.lin[k].forEach(function(v,i){
+          if(v===pid&&!(exceptoLinea===k&&exceptoIdx===i)) d.lin[k][i]="";
+        });
+      });
+      // vaciar, NO filtrar: filtrar reindexa el array y desalinea el idx del select
+      d.supl.forEach(function(v,i){
+        if(v===pid&&!(exceptoLinea==="supl"&&exceptoIdx===i)) d.supl[i]="";
+      });
+    }
+    function selJugador(valor,attrs){
+      return '<select '+attrs+'>'+playerOpts(valor,"— libre —")+'</select>';
+    }
+    function drawLineas(){
+      var f=FORMS[d.formacion]||FORMS[FORM_DEF];
+      var out='<div class="linea"><span class="linea-t">ARQ</span><div class="linea-s">'+
+        selJugador(d.lin.arq,'data-lin="arq" data-i="0"')+'</div></div>';
+      LINEAS.forEach(function(par){
+        var k=par[0], n=f[k], celdas="";
+        for(var i=0;i<n;i++) celdas+=selJugador(d.lin[k][i]||"",'data-lin="'+k+'" data-i="'+i+'"');
+        out+='<div class="linea" style="margin-top:10px"><span class="linea-t">'+par[1]+
+             '</span><div class="linea-s">'+celdas+'</div></div>';
+      });
+      byId("lineas").innerHTML=out;
+      Array.prototype.forEach.call(byId("m-form").children,function(b){
+        b.setAttribute("aria-pressed", b.getAttribute("data-form")===d.formacion?"true":"false");
+      });
+    }
+    function drawSupl(){
+      var out="";
+      d.supl.forEach(function(pid,i){
+        out+='<div class="supl-row">'+selJugador(pid,'data-lin="supl" data-i="'+i+'"')+
+          '<button class="gdel" data-delsupl="'+i+'" aria-label="Quitar suplente">×</button></div>';
+      });
+      byId("supl").innerHTML=out||'<p class="tiny muted" style="margin:0">Sin suplentes.</p>';
+    }
+    // Las tarjetas se cargan solo para los convocados (titulares + suplentes).
     function drawRoster(){
+      var conv2=planos(d.lin).concat(d.supl.filter(Boolean));
       var out="";
       pool.forEach(function(p){
-        var rol=d.rol[p.id]||"", t=d.tj[p.id]||{am:0,ro:0};
-        out+='<div class="rrow'+(rol?" in":"")+'" data-row="'+esc(p.id)+'">'+
+        if(conv2.indexOf(p.id)<0) return;
+        var t=d.tj[p.id]||{am:0,ro:0};
+        out+='<div class="rrow in" data-row="'+esc(p.id)+'">'+
           '<div class="rrow-top">'+
           '<span class="dorsal">'+esc(p.dorsal||"")+'</span>'+
           '<span class="nm">'+esc(p.apodo||p.nombre)+'</span>'+
-          '<span class="pos">'+esc(p.pos||"")+'</span>'+
           '<span class="sp">'+
-          (rol==="T"?'<button class="gk" data-gk="'+esc(p.id)+'" aria-pressed="'+(d.arquero===p.id?"true":"false")+'">ARQ</button>':'')+
-          '<span class="seg mini">'+
-          '<button data-rol="T" data-p="'+esc(p.id)+'" aria-pressed="'+(rol==="T"?"true":"false")+'">T</button>'+
-          '<button data-rol="S" data-p="'+esc(p.id)+'" aria-pressed="'+(rol==="S"?"true":"false")+'">S</button>'+
-          '<button data-rol="" data-p="'+esc(p.id)+'" aria-pressed="'+(rol===""?"true":"false")+'">–</button>'+
-          '</span></span></div>';
-        if(rol) out+='<div class="rrow-ct">'+
           '<button class="gk" data-tj="am" data-p="'+esc(p.id)+'" aria-pressed="'+(t.am>0?"true":"false")+'"><span class="card-y"></span>'+(t.am>1?" ×"+t.am:"")+'</button>'+
           '<button class="gk" data-tj="ro" data-p="'+esc(p.id)+'" aria-pressed="'+(t.ro>0?"true":"false")+'"><span class="card-r"></span></button>'+
-          '</div>';
-        out+='</div>';
+          '</span></div></div>';
       });
-      byId("roster").innerHTML=out;
+      byId("roster").innerHTML=out||'<div class="rrow"><span class="tiny muted">Cargá la alineación para poder marcar tarjetas.</span></div>';
     }
+    function drawAlineacion(){ drawLineas(); drawSupl(); drawRoster(); updateHint(); }
     function syncWalk(){
       byId("goles-wrap").style.display=byId("m-walk").checked?"none":"";
     }
     function updateHint(){
       var gf=Number(byId("m-gf").value)||0;
-      var t=0,s=0;
-      Object.keys(d.rol).forEach(function(k){ if(d.rol[k]==="T")t++; else if(d.rol[k]==="S")s++; });
+      var t=planos(d.lin).length, s=d.supl.filter(Boolean).length;
       byId("hint").textContent=d.goles.length+" "+pl(d.goles.length,"gol","goles")+" · "+t+" "+pl(t,"titular","titulares")+" · "+s+" "+pl(s,"suplente","suplentes");
       var msgs=[];
       if(!byId("m-walk").checked){
@@ -1450,7 +1593,7 @@ function sheetMatchForm(mid){
         var sinQuien=d.goles.filter(function(g){return !g.autor&&!g.ec;}).length;
         if(sinQuien) msgs.push(sinQuien+" sin elegir quién lo hizo.");
       }
-      if(t>8) msgs.push("Hay "+t+" titulares: en fútbol 8 son 8.");
+      if(t>0&&t<8) msgs.push("La alineación tiene "+t+" de 8: quedan puestos libres.");
       var el=byId("gol-msg");
       el.textContent=msgs.join(" ");
       el.style.color=msgs.length?"var(--oro)":"";
@@ -1471,11 +1614,8 @@ function sheetMatchForm(mid){
       var fecha=byId("m-fecha").value;
       if(!fecha){ toast("Falta la fecha.",true); return; }
       var walk=byId("m-walk").checked;
-      var tit=[],sup=[];
-      pool.forEach(function(p){
-        var r=d.rol[p.id];
-        if(r==="T")tit.push(p.id); else if(r==="S")sup.push(p.id);
-      });
+      var tit=planos(d.lin);                        // orden: ARQ, DEF, VOL, DEL
+      var sup=d.supl.filter(Boolean);
       var goles=walk?[]:d.goles.filter(function(g){return g.ec||g.autor;}).map(function(g){
         return {autor:g.ec?null:g.autor,ec:!!g.ec,asist:g.ec?null:(g.asist||null)};
       });
@@ -1493,9 +1633,12 @@ function sheetMatchForm(mid){
         gf:Math.max(0,Number(byId("m-gf").value)||0),
         gc:Math.max(0,Number(byId("m-gc").value)||0),
         goles:goles, walkover:walk,
-        formacion:byId("m-form").value,
+        formacion:d.formacion,
+        // alineacion = la fuente de verdad de las posiciones;
+        // titulares = la lista plana que usan las estadisticas
+        alineacion:{arq:d.lin.arq||null,def:d.lin.def.slice(),vol:d.lin.vol.slice(),del:d.lin.del.slice()},
         titulares:tit, suplentes:sup,
-        arquero:(d.arquero&&tit.indexOf(d.arquero)>=0)?d.arquero:null,
+        arquero:d.lin.arq||null,
         tarjetas:tarj,
         mvp:byId("m-mvp").value||null,
         video:byId("m-video").value.trim(),
@@ -1508,7 +1651,7 @@ function sheetMatchForm(mid){
       save((x==="V"?"Victoria":x==="E"?"Empate":"Derrota")+" vs "+rival+" guardada.");
     }
 
-    drawGoles(); drawRoster(); syncWalk(); updateHint();
+    drawGoles(); drawAlineacion(); syncWalk(); updateHint();
 
     sc.addEventListener("click",function(e){
       var t;
@@ -1525,16 +1668,17 @@ function sheetMatchForm(mid){
       if((t=e.target.closest("[data-delgol]"))){
         d.goles.splice(Number(t.getAttribute("data-delgol")),1); drawGoles(); return;
       }
-      if((t=e.target.closest("[data-rol]"))){
-        var pid=t.getAttribute("data-p"), r=t.getAttribute("data-rol");
-        if(r) d.rol[pid]=r; else { delete d.rol[pid]; delete d.tj[pid]; }
-        if(d.arquero===pid&&d.rol[pid]!=="T") d.arquero="";
-        drawRoster(); updateHint(); return;
+      if((t=e.target.closest("[data-form]"))){
+        d.formacion=t.getAttribute("data-form");
+        ajustarLineas();
+        drawAlineacion(); return;
       }
-      if((t=e.target.closest("[data-gk]"))){
-        var g=t.getAttribute("data-gk");
-        d.arquero=(d.arquero===g)?"":g;
-        drawRoster(); return;
+      if(e.target.closest('[data-act="add-supl"]')){
+        d.supl.push(""); drawSupl(); return;
+      }
+      if((t=e.target.closest("[data-delsupl]"))){
+        d.supl.splice(Number(t.getAttribute("data-delsupl")),1);
+        drawAlineacion(); return;
       }
       if((t=e.target.closest("[data-tj]"))){
         var p3=t.getAttribute("data-p"), kk=t.getAttribute("data-tj");
@@ -1553,6 +1697,14 @@ function sheetMatchForm(mid){
           else { d.goles[i].ec=false; d.goles[i].autor=t.value; }
         }else d.goles[i].asist=t.value;
         drawGoles(); return;
+      }
+      if(t.getAttribute&&t.getAttribute("data-lin")){
+        var linea=t.getAttribute("data-lin"), idx=Number(t.getAttribute("data-i")), val=t.value;
+        liberar(val,linea,idx);
+        if(linea==="arq") d.lin.arq=val;
+        else if(linea==="supl") d.supl[idx]=val;
+        else d.lin[linea][idx]=val;
+        drawAlineacion(); return;
       }
       if(t.id==="m-walk"){ syncWalk(); updateHint(); return; }
       if(t.id==="m-season"){ if(!m) byId("m-jornada").value=nextJornada(t.value); return; }
