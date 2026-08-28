@@ -1,7 +1,7 @@
 # DOMA FC — estadísticas
 
 Sitio estático con las estadísticas del equipo de fútbol 8.
-Publicado con GitHub Pages: https://mauscasso-code.github.io/doma-fc/
+Publicado con GitHub Pages: https://mscasso23.github.io/doma-fc/
 
 ## Cómo funciona
 
