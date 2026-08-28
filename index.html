@@ -1474,23 +1474,27 @@ function sheetMatchForm(mid){
     '<div class="toolbar" style="margin-top:10px"><button class="btn btn-sm" data-act="add-gol">+ Agregar gol</button>'+
     '<span class="tiny muted" id="gol-msg"></span></div></div>';
 
-  h+='<details class="fold"'+(conv(m||{}).length?" open":"")+'><summary>Alineación, suplentes, tarjetas y MVP (opcional)</summary><div class="fold-b">'+
-    '<div><div class="eyebrow" style="margin-bottom:8px">Formación</div>'+
-    '<div class="seg" id="m-form">'+
+  // La alineación va a la vista, NO dentro de un acordeón: es lo que más se carga.
+  h+='<div><div class="eyebrow" style="margin-bottom:8px">Alineación</div>'+
+    '<div class="seg" id="m-form" style="margin-bottom:12px">'+
       Object.keys(FORMS).map(function(f){
         return '<button type="button" data-form="'+esc(f)+'" aria-pressed="'+(d.formacion===f?"true":"false")+'">'+esc(f)+'</button>';
       }).join("")+
-    '</div></div>'+
-    '<div id="lineas"></div>'+
-    '<div><div class="eyebrow" style="margin-bottom:8px">Suplentes</div>'+
-    '<div id="supl"></div>'+
-    '<button class="btn btn-sm" data-act="add-supl" style="margin-top:9px">+ Agregar suplente</button></div>'+
-    '<div class="fgrid">'+
-    '<label class="f"><span>MVP</span><select id="m-mvp">'+playerOpts(d.mvp,"—")+'</select></label>'+
     '</div>'+
-    '<div><div class="eyebrow" style="margin-bottom:8px">Tarjetas</div>'+
-    '<div class="roster" id="roster"></div></div>'+
-    '<p class="tiny muted" style="margin:0">Si cargás la alineación, los partidos jugados y el presentismo se calculan solos. Si no, quedan los que estén cargados a mano en la temporada.</p>'+
+    '<div id="lineas"></div>'+
+    '<p class="tiny muted" style="margin:10px 0 0">Elegí la formación y poné un jugador en cada puesto. Si dejás puestos libres no pasa nada: se guarda igual.</p>'+
+    '</div>';
+
+  h+='<div><div class="eyebrow" style="margin-bottom:8px">Suplentes</div>'+
+    '<div id="supl"></div>'+
+    '<button class="btn btn-sm" data-act="add-supl" style="margin-top:9px">+ Agregar suplente</button></div>';
+
+  h+='<details class="fold"'+((m&&(Object.keys(m.tarjetas||{}).length||m.mvp))?" open":"")+
+    '><summary>Tarjetas y MVP (opcional)</summary><div class="fold-b">'+
+    '<div class="fgrid">'+
+    '<label class="f"><span>MVP del partido</span><select id="m-mvp">'+playerOpts(d.mvp,"—")+'</select></label>'+
+    '</div>'+
+    '<div class="roster" id="roster"></div>'+
     '</div></details>';
 
   h+='<div class="fgrid">'+
