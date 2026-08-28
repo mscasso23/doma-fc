@@ -39,7 +39,7 @@
    "id": "pl_francisco_palermo",
    "nombre": "Francisco Palermo",
    "apodo": "",
-   "dorsal": "10",
+   "dorsal": "5",
    "pos": "",
    "activo": true
   },
@@ -47,7 +47,7 @@
    "id": "pl_mauro_scasso",
    "nombre": "Mauro Scasso",
    "apodo": "",
-   "dorsal": "5",
+   "dorsal": "10",
    "pos": "",
    "activo": true
   },
@@ -143,7 +143,7 @@
    "id": "pl_gasti_cavs",
    "nombre": "Gasti Cavs",
    "apodo": "",
-   "dorsal": "",
+   "dorsal": "25",
    "pos": "ARQ",
    "activo": true
   },
@@ -151,7 +151,7 @@
    "id": "pl_federico_giuffrida",
    "nombre": "Federico Giuffrida",
    "apodo": "",
-   "dorsal": "",
+   "dorsal": "6",
    "pos": "",
    "activo": true
   }
