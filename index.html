@@ -414,6 +414,7 @@ details.fold[open]>summary{border-bottom:1px solid var(--line)}
       <div class="season-row">
         <select class="season-sel" id="season-sel" aria-label="Temporada"></select>
         <button class="btn-thin" id="seasons-btn">Temporadas</button>
+        <button class="btn-thin" id="aviso-btn">Aviso</button>
         <button class="btn-thin" id="token-btn">Cargar datos</button>
       </div>
       <div class="scoreline" id="hdr-record"></div>
@@ -720,6 +721,7 @@ function aplicarModo(){
   RO=!TOKEN;
   var nm=byId("new-match"); if(nm) nm.style.display=RO?"none":"";
   var sb=byId("seasons-btn"); if(sb) sb.style.display=RO?"none":"";
+  var ab=byId("aviso-btn"); if(ab) ab.style.display=RO?"none":"";
   var tb=byId("token-btn"); if(tb) tb.textContent=RO?"Cargar datos":"Guardado activo";
   setSavebar(RO?"Solo lectura. Las estadisticas las carga el administrador del equipo.":"",RO);
 }
@@ -1980,6 +1982,7 @@ function setSeason(id){
 
 byId("season-sel").addEventListener("change",function(){ setSeason(this.value); });
 byId("seasons-btn").addEventListener("click",function(){ if(!RO) sheetSeasons(); });
+byId("aviso-btn").addEventListener("click",function(){ if(!RO) sheetAviso(); });
 byId("token-btn").addEventListener("click",function(){ sheetToken(); });
 
 document.addEventListener("click",function(e){
@@ -2015,10 +2018,16 @@ function cerrarAviso(){
 }
 function escAviso(e){ if(e.key==="Escape") cerrarAviso(); }
 function mostrarAviso(){
-  var a=S.aviso, h=byId("aviso-host");
-  if(!h||!a||!a.fecha||a.fecha!==todayISO()) return;
+  var a=S.aviso;
+  if(!a||!a.fecha||a.fecha!==todayISO()) return;
   if(avisoCerrado(a.fecha)) return;
-  AVISO_KEY=a.fecha;
+  pintarAviso(a,false);
+}
+// preview=true: es una prueba desde el formulario, no se marca como visto.
+function pintarAviso(a,preview){
+  var h=byId("aviso-host");
+  if(!h||!a) return;
+  AVISO_KEY=preview?"":(a.fecha||"");
   var sc=document.createElement("div");
   sc.className="aviso-scrim";
   sc.innerHTML='<div class="aviso" role="dialog" aria-modal="true" aria-label="Dia de partido">'+
@@ -2039,6 +2048,82 @@ function mostrarAviso(){
   });
   h.appendChild(sc);
   document.addEventListener("keydown",escAviso);
+}
+
+function sheetAviso(){
+  var a=S.aviso||{};
+  var d={
+    fecha:a.fecha||todayISO(),
+    titulo:a.titulo||"Hoy hay que ganar!!!",
+    grito:a.grito||"Vamos DOMA",
+    rival:a.rival||"",
+    hora:a.hora||"",
+    boton:a.boton||"Vamos!"
+  };
+  var hoy=todayISO();
+  var estado=!a.fecha ? "No hay ningún aviso cargado."
+    : (a.fecha===hoy ? "Hay un aviso activo para hoy."
+    : (a.fecha>hoy ? "Hay un aviso programado para el "+fmtDateLong(a.fecha)+"."
+    : "El aviso cargado es del "+fmtDateLong(a.fecha)+", ya pasó y no se muestra más."));
+
+  var h='<div class="sheet-h"><div><h2>Aviso de partido</h2>'+
+    '<div class="sub">'+esc(estado)+'</div></div>'+
+    '<button class="x" data-close aria-label="Cerrar">×</button></div><div class="sheet-b">';
+  h+='<div class="note info tiny">El cartel aparece al entrar a la app <b>solo el día de la fecha que pongas acá</b>. '+
+     'Al día siguiente desaparece solo. Cada uno lo ve una vez: si lo cierra, no le vuelve a salir ese día.</div>';
+  h+='<div class="fgrid">'+
+    '<label class="f"><span>Día del partido</span>'+
+    '<input type="date" id="av-fecha" data-autofocus value="'+esc(d.fecha)+'"></label>'+
+    '<label class="f"><span>Hora</span>'+
+    '<input type="text" id="av-hora" value="'+esc(d.hora)+'" placeholder="20hs"></label>'+
+    '<label class="f" style="grid-column:span 2"><span>Rival</span>'+
+    '<input type="text" id="av-rival" value="'+esc(d.rival)+'" placeholder="La Alegria"></label>'+
+    '<label class="f" style="grid-column:span 2"><span>Título</span>'+
+    '<input type="text" id="av-titulo" value="'+esc(d.titulo)+'" placeholder="Hoy hay que ganar!!!"></label>'+
+    '<label class="f"><span>Grito</span>'+
+    '<input type="text" id="av-grito" value="'+esc(d.grito)+'" placeholder="Vamos DOMA"></label>'+
+    '<label class="f"><span>Texto del botón</span>'+
+    '<input type="text" id="av-boton" value="'+esc(d.boton)+'" placeholder="Vamos!"></label>'+
+    '</div>'+
+    '<p class="tiny muted" style="margin:0">El título y el grito se muestran en mayúscula, escribilos normal. '+
+    'Rival y hora podés dejarlos vacíos si no los sabés todavía.</p>';
+  h+='</div><div class="sheet-f">'+
+    (a.fecha?'<button class="btn btn-sm btn-danger" data-act="quitar">Quitar aviso</button>':'')+
+    '<span class="r"><button class="btn btn-sm" data-act="probar">Ver cómo queda</button>'+
+    '<button class="btn btn-sm" data-close>Cancelar</button>'+
+    '<button class="btn btn-p btn-sm" data-act="ok">Guardar</button></span></div>';
+
+  openSheet(h,function(sc){
+    function leer(){
+      return {
+        fecha:byId("av-fecha").value,
+        titulo:byId("av-titulo").value.trim(),
+        grito:byId("av-grito").value.trim(),
+        rival:byId("av-rival").value.trim(),
+        hora:byId("av-hora").value.trim(),
+        boton:byId("av-boton").value.trim()||"Vamos!"
+      };
+    }
+    sc.addEventListener("click",function(e){
+      if(e.target.closest("[data-close]")){ closeSheet(); return; }
+      if(e.target.closest('[data-act="probar"]')){ pintarAviso(leer(),true); return; }
+      if(e.target.closest('[data-act="quitar"]')){
+        S.aviso=null;
+        closeSheet(); save("Aviso quitado."); return;
+      }
+      if(e.target.closest('[data-act="ok"]')){
+        var v=leer();
+        if(!v.fecha){ toast("Falta el día del partido.",true); return; }
+        if(!v.titulo){ toast("Falta el título del aviso.",true); return; }
+        S.aviso=v;
+        // Si es para hoy, se limpia el "ya lo vi" para poder verlo de nuevo.
+        try{ localStorage.removeItem("doma.aviso."+v.fecha); }catch(e2){}
+        closeSheet();
+        save("Aviso del "+fmtDateLong(v.fecha)+" guardado.");
+        if(v.fecha===todayISO()) pintarAviso(v,false);
+      }
+    });
+  });
 }
 
 /* ===================== arranque ===================== */
