@@ -1066,14 +1066,43 @@
      "asist": "pl_tomas_lamas"
     }
    ],
-   "video": "",
-   "formacion": "",
-   "titulares": [],
-   "suplentes": [],
-   "arquero": null,
+   "walkover": false,
+   "formacion": "3-3-1",
+   "alineacion": {
+    "arq": "pl_mtdcpdqm541",
+    "def": [
+     "pl_lucas_petrone",
+     "pl_federico_giuffrida",
+     "pl_giuliano_vitalone"
+    ],
+    "vol": [
+     "pl_tomas_lamas",
+     "pl_mauro_scasso",
+     "pl_francisco_palermo"
+    ],
+    "del": [
+     "pl_franco_ibarra"
+    ]
+   },
+   "titulares": [
+    "pl_mtdcpdqm541",
+    "pl_lucas_petrone",
+    "pl_federico_giuffrida",
+    "pl_giuliano_vitalone",
+    "pl_tomas_lamas",
+    "pl_mauro_scasso",
+    "pl_francisco_palermo",
+    "pl_franco_ibarra"
+   ],
+   "suplentes": [
+    "pl_emanuel_cattolico",
+    "pl_matias_espejo",
+    "pl_ramiro_almada"
+   ],
+   "arquero": "pl_mtdcpdqm541",
    "tarjetas": {},
    "mvp": null,
-   "walkover": false,
+   "video": "https://youtu.be/n0ViRARQ9mU",
    "notas": ""
   }
  ]
