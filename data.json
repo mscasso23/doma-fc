@@ -37,8 +37,16 @@
   {
    "id": "s_mtdbtwzfq7h",
    "nombre": "Clausura 2026",
-   "orden": 2,
+   "orden": 3,
    "posicion": null,
+   "pjManual": {},
+   "arqueros": {}
+  },
+  {
+   "id": "s_copaliga2026",
+   "nombre": "Copa de la Liga 2026",
+   "orden": 2,
+   "posicion": 2,
    "pjManual": {},
    "arqueros": {}
   }
@@ -728,6 +736,176 @@
    "notas": "El rival no se presento"
   },
   {
+   "id": "m_copa05",
+   "seasonId": "s_copaliga2026",
+   "fecha": "",
+   "jornada": "Final",
+   "rival": "Bigotes FC",
+   "sede": "",
+   "gf": 1,
+   "gc": 3,
+   "goles": [
+    {
+     "autor": null,
+     "ec": true,
+     "asist": null
+    }
+   ],
+   "video": "",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_copa04",
+   "seasonId": "s_copaliga2026",
+   "fecha": "",
+   "jornada": "Semifinal",
+   "rival": "Lugano Tennis Club",
+   "sede": "",
+   "gf": 6,
+   "gc": 3,
+   "goles": [
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_lucas_petrone"
+    },
+    {
+     "autor": "pl_lucas_petrone",
+     "ec": false,
+     "asist": "pl_franco_ibarra"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_emanuel_cattolico"
+    },
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": "pl_agustin_suarez"
+    },
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": "pl_agustin_suarez"
+    },
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": null
+    }
+   ],
+   "video": "",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_copa03",
+   "seasonId": "s_copaliga2026",
+   "fecha": "",
+   "jornada": "Fecha 3",
+   "rival": "Branca United",
+   "sede": "",
+   "gf": 2,
+   "gc": 1,
+   "goles": [
+    {
+     "autor": "pl_lucas_petrone",
+     "ec": false,
+     "asist": "pl_francisco_palermo"
+    },
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": "pl_lucas_petrone"
+    }
+   ],
+   "video": "",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_copa02",
+   "seasonId": "s_copaliga2026",
+   "fecha": "",
+   "jornada": "Fecha 2",
+   "rival": "Barsito FC",
+   "sede": "",
+   "gf": 3,
+   "gc": 4,
+   "goles": [
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": "pl_franco_ibarra"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_francisco_palermo"
+    },
+    {
+     "autor": "pl_agustin_suarez",
+     "ec": false,
+     "asist": "pl_tomas_lamas"
+    }
+   ],
+   "video": "",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
+   "id": "m_copa01",
+   "seasonId": "s_copaliga2026",
+   "fecha": "",
+   "jornada": "Fecha 1",
+   "rival": "Bigotes FC",
+   "sede": "",
+   "gf": 1,
+   "gc": 1,
+   "goles": [
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": "pl_emanuel_cattolico"
+    }
+   ],
+   "video": "",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
+   "notas": ""
+  },
+  {
    "id": "m_mtdbwcao12c",
    "seasonId": "s_mtdbtwzfq7h",
    "fecha": "2026-08-20",
@@ -865,6 +1043,37 @@
    "tarjetas": {},
    "mvp": null,
    "video": "",
+   "notas": ""
+  },
+  {
+   "id": "m_clau03",
+   "seasonId": "s_mtdbtwzfq7h",
+   "fecha": "2026-09-03",
+   "jornada": "Fecha 3",
+   "rival": "El Nudo FC",
+   "sede": "",
+   "gf": 2,
+   "gc": 7,
+   "goles": [
+    {
+     "autor": "pl_emanuel_cattolico",
+     "ec": false,
+     "asist": null
+    },
+    {
+     "autor": "pl_franco_ibarra",
+     "ec": false,
+     "asist": "pl_tomas_lamas"
+    }
+   ],
+   "video": "",
+   "formacion": "",
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "walkover": false,
    "notas": ""
   }
  ]
