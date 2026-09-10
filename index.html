@@ -294,6 +294,25 @@ table.plain{min-width:0}
 .x{appearance:none;background:none;border:0;cursor:pointer;color:var(--text-2);font-size:22px;line-height:1;padding:4px 6px;margin-left:auto}
 .x:hover{color:var(--text)}
 
+/* ---------- aviso de dia de partido (solo si data.json trae "aviso" con la fecha de hoy) ---------- */
+.aviso-scrim{position:fixed;inset:0;background:rgba(6,14,34,.78);z-index:80;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.aviso{position:relative;background:var(--band);color:#fff;width:100%;max-width:420px;border-radius:18px;overflow:hidden;text-align:center;border:1px solid rgba(255,255,255,.14);box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.aviso-top{height:5px;background:var(--band-rule)}
+.aviso-b{padding:26px 22px 22px}
+.aviso img{height:74px;width:auto;display:block;margin:0 auto 16px}
+.aviso h2{font-family:var(--f-disp);font-weight:800;text-transform:uppercase;font-size:38px;line-height:.92;letter-spacing:.01em;color:#fff}
+.aviso .vamos{font-family:var(--f-disp);font-weight:700;text-transform:uppercase;font-size:22px;letter-spacing:.06em;color:var(--cta);margin-top:8px}
+.aviso .rule{height:1px;background:rgba(255,255,255,.18);margin:18px 0}
+.aviso .rival{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.aviso .rival strong{display:block;font-family:var(--f-disp);font-weight:700;font-size:26px;letter-spacing:.01em;color:#fff;margin-top:3px;text-transform:none}
+.aviso .hora{font-family:var(--f-mono);font-size:15px;font-weight:600;color:var(--cta);margin-top:10px}
+.x-av{position:absolute;top:8px;right:10px;margin:0;color:rgba(255,255,255,.6);font-size:26px;z-index:1}
+.x-av:hover{color:#fff}
+.btn-av{appearance:none;border:0;cursor:pointer;width:100%;margin-top:20px;padding:12px;border-radius:9px;
+  background:var(--cta);color:var(--on-cta);font-family:inherit;font-size:14px;font-weight:700;letter-spacing:.02em}
+.btn-av:hover{filter:brightness(1.06)}
+@media(max-width:400px){.aviso h2{font-size:32px}.aviso img{height:62px}}
+
 /* ---------- forms ---------- */
 .fgrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
 label.f{display:flex;flex-direction:column;gap:5px}
@@ -420,6 +439,7 @@ details.fold[open]>summary{border-bottom:1px solid var(--line)}
 
 <div class="savebar" id="savebar"><span class="dot"></span><span id="savebar-txt"></span></div>
 <div id="sheet-host"></div>
+<div id="aviso-host"></div>
 <div id="toast-host"></div>
 
 
@@ -455,11 +475,13 @@ function fromB64(s){
 function ghUrl(){ return "/repos/"+GH.owner+"/"+GH.repo+"/contents/"+GH.path; }
 
 /* ===================== state ===================== */
-var S={version:2,seasons:[],players:[],matches:[]};
+var S={version:2,seasons:[],players:[],matches:[],aviso:null};
 function adoptar(p){
   S.players=(p&&Array.isArray(p.players))?p.players:[];
   S.matches=(p&&Array.isArray(p.matches))?p.matches:[];
   S.seasons=(p&&Array.isArray(p.seasons))?p.seasons:[];
+  // El aviso viaja en S para que no se pierda cuando se guarda un partido.
+  S.aviso=(p&&p.aviso&&typeof p.aviso==="object")?p.aviso:null;
   migrate();
 }
 // Con token leemos por la API: viene fresco y trae el sha que necesita el guardado.
@@ -1980,6 +2002,45 @@ document.addEventListener("click",function(e){
   if((t=e.target.closest("[data-player]"))){ sheetPlayer(t.getAttribute("data-player")); return; }
 });
 
+/* ===================== aviso de dia de partido =====================
+   Se muestra una sola vez por dispositivo y solo si data.json trae:
+     "aviso":{"fecha":"AAAA-MM-DD","titulo":"...","grito":"...","rival":"...","hora":"..."}
+   Con la fecha pasada, o sin el campo, la app arranca como siempre. */
+var AVISO_KEY="";
+function avisoCerrado(k){ try{ return localStorage.getItem("doma.aviso."+k)==="1"; }catch(e){ return false; } }
+function cerrarAviso(){
+  if(AVISO_KEY){ try{ localStorage.setItem("doma.aviso."+AVISO_KEY,"1"); }catch(e){} }
+  var h=byId("aviso-host"); if(h) h.innerHTML="";
+  document.removeEventListener("keydown",escAviso);
+}
+function escAviso(e){ if(e.key==="Escape") cerrarAviso(); }
+function mostrarAviso(){
+  var a=S.aviso, h=byId("aviso-host");
+  if(!h||!a||!a.fecha||a.fecha!==todayISO()) return;
+  if(avisoCerrado(a.fecha)) return;
+  AVISO_KEY=a.fecha;
+  var sc=document.createElement("div");
+  sc.className="aviso-scrim";
+  sc.innerHTML='<div class="aviso" role="dialog" aria-modal="true" aria-label="Dia de partido">'+
+    '<div class="aviso-top"></div>'+
+    '<button class="x x-av" data-cerrar aria-label="Cerrar">&times;</button>'+
+    '<div class="aviso-b">'+
+      '<img src="escudo.png" alt="">'+
+      '<h2>'+esc(a.titulo||"Hoy hay que ganar!!!")+'</h2>'+
+      (a.grito?'<div class="vamos">'+esc(a.grito)+'</div>':"")+
+      (a.rival||a.hora?'<div class="rule"></div>':"")+
+      (a.rival?'<div class="rival">vs.<strong>'+esc(a.rival)+'</strong></div>':"")+
+      (a.hora?'<div class="hora">'+esc(a.hora)+'</div>':"")+
+      '<button class="btn-av" data-cerrar>'+esc(a.boton||"Vamos!")+'</button>'+
+    '</div></div>';
+  sc.addEventListener("mousedown",function(e){ if(e.target===sc) cerrarAviso(); });
+  sc.addEventListener("click",function(e){
+    if(e.target&&e.target.closest&&e.target.closest("[data-cerrar]")) cerrarAviso();
+  });
+  h.appendChild(sc);
+  document.addEventListener("keydown",escAviso);
+}
+
 /* ===================== arranque ===================== */
 function arrancarVistas(){
   var sns=seasonsSorted();
@@ -2010,6 +2071,7 @@ cargarDatos().then(function(p){
   adoptar(p);
   aplicarModo();
   arrancarVistas();
+  mostrarAviso();
 }).catch(function(err){
   setSavebar("",false);
   pantallaError((err&&err.message)?err.message:"Error desconocido.");
