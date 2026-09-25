@@ -49,6 +49,14 @@
    "posicion": 2,
    "pjManual": {},
    "arqueros": {}
+  },
+  {
+   "id": "s_libertadores2026",
+   "nombre": "Copa Libertadores 2026",
+   "orden": 4,
+   "posicion": null,
+   "pjManual": {},
+   "arqueros": {}
   }
  ],
  "players": [

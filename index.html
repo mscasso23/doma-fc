@@ -2127,9 +2127,19 @@ function sheetAviso(){
 }
 
 /* ===================== arranque ===================== */
-function arrancarVistas(){
+// Con torneos en paralelo el orden ya no alcanza para saber cual esta en curso:
+// abre en la temporada del partido mas reciente, no en la ultima de la lista.
+function seasonPorDefecto(){
   var sns=seasonsSorted();
-  SEL=sns.length?sns[sns.length-1].id:ALL;
+  if(!sns.length) return ALL;
+  var mejor=null, fmax="";
+  S.matches.forEach(function(m){
+    if(m.fecha&&m.fecha>fmax&&season(m.seasonId)){ fmax=m.fecha; mejor=m.seasonId; }
+  });
+  return mejor||sns[sns.length-1].id;
+}
+function arrancarVistas(){
+  SEL=seasonPorDefecto();
   try{
     var sv=localStorage.getItem("doma.season");
     if(sv===ALL||(sv&&season(sv))) SEL=sv;
