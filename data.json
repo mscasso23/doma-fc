@@ -1104,6 +1104,48 @@
    "mvp": null,
    "video": "https://youtu.be/n0ViRARQ9mU",
    "notas": ""
+  },
+  {
+   "id": "m_muh8lmwhc51",
+   "seasonId": "s_mtdbtwzfq7h",
+   "fecha": "2026-09-10",
+   "jornada": "Fecha 4",
+   "rival": "Bigotes FC",
+   "sede": "",
+   "gf": 1,
+   "gc": 3,
+   "goles": [
+    {
+     "autor": null,
+     "ec": true,
+     "asist": null
+    }
+   ],
+   "walkover": false,
+   "formacion": "3-3-1",
+   "alineacion": {
+    "arq": null,
+    "def": [
+     "",
+     "",
+     ""
+    ],
+    "vol": [
+     "",
+     "",
+     ""
+    ],
+    "del": [
+     ""
+    ]
+   },
+   "titulares": [],
+   "suplentes": [],
+   "arquero": null,
+   "tarjetas": {},
+   "mvp": null,
+   "video": "",
+   "notas": ""
   }
  ],
  "aviso": {
