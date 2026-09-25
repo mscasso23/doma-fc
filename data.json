@@ -1154,6 +1154,70 @@
    "mvp": null,
    "video": "",
    "notas": ""
+  },
+  {
+   "id": "m_muha5ycphm4",
+   "seasonId": "s_libertadores2026",
+   "fecha": "2026-09-22",
+   "jornada": "Fecha 1",
+   "rival": "La Alegria",
+   "sede": "",
+   "gf": 3,
+   "gc": 1,
+   "goles": [
+    {
+     "autor": "pl_mauro_scasso",
+     "ec": false,
+     "asist": null
+    },
+    {
+     "autor": "pl_gonzalo_roman",
+     "ec": false,
+     "asist": null
+    },
+    {
+     "autor": "pl_emanuel_cattolico",
+     "ec": false,
+     "asist": null
+    }
+   ],
+   "walkover": false,
+   "formacion": "2-4-1",
+   "alineacion": {
+    "arq": "pl_gasti_cavs",
+    "def": [
+     "pl_federico_giuffrida",
+     "pl_giuliano_vitalone"
+    ],
+    "vol": [
+     "pl_emanuel_cattolico",
+     "pl_mauro_scasso",
+     "pl_francisco_palermo",
+     "pl_gonzalo_roman"
+    ],
+    "del": [
+     "pl_franco_ibarra"
+    ]
+   },
+   "titulares": [
+    "pl_gasti_cavs",
+    "pl_federico_giuffrida",
+    "pl_giuliano_vitalone",
+    "pl_emanuel_cattolico",
+    "pl_mauro_scasso",
+    "pl_francisco_palermo",
+    "pl_gonzalo_roman",
+    "pl_franco_ibarra"
+   ],
+   "suplentes": [
+    "pl_matias_espejo",
+    "pl_ramiro_almada"
+   ],
+   "arquero": "pl_gasti_cavs",
+   "tarjetas": {},
+   "mvp": null,
+   "video": "https://youtu.be/6UYQPm5uP3g",
+   "notas": ""
   }
  ],
  "aviso": {
